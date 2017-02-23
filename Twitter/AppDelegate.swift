@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import BDBOAuth1Manager
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -39,6 +40,45 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    }
+    
+    func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
+            // when we return to the app from a link
+            print(url.description)
+        
+
+            let requestToken = BDBOAuth1Credential(queryString: url.query)
+            let twitterClient = BDBOAuth1SessionManager(baseURL: NSURL(string: "https://api.twitter.com") as URL!, consumerKey: "qD4k4zqpmv2QaHOzh4e2VDmcL", consumerSecret: "0EDrAWIadwJzBXWQt44rgGDv5XXAEt96iehnECJHMuHd6gGDRO")
+        
+        //gets the Twitter Client so we can make API calls on behalf of this user
+        twitterClient?.fetchAccessToken(withPath: "oauth/access_token", method: "POST", requestToken: requestToken, success: { (accessToken: BDBOAuth1Credential?) -> Void in
+            print("I got access token")
+            // actually gets twitter account now
+            twitterClient?.get("1.1/account/verify_credentials.json", parameters: nil, progress: nil, success: { (task: URLSessionDataTask, response: Any?) -> Void in
+                //prints full account
+                //print("account: \(response)")
+                let user = response as! NSDictionary
+                print("name: \(user["name"])")
+                
+            }, failure: { (task: URLSessionDataTask?, error: Error) -> Void in
+                    
+            })
+            
+            twitterClient?.get("1.1/statuses/home_timeline.json", parameters: nil, progress: nil, success: { (task: URLSessionDataTask, response: Any?) -> Void in
+                let tweets = response as! [NSDictionary] //tweets is an array
+                
+                for tweet in tweets {
+                    print("\(tweet["text"]!)")
+                }
+            }, failure: { (task: URLSessionDataTask?, error: Error) in
+                
+            })
+            
+            
+        }, failure: { (error: Error?) -> Void in
+                print("error: \(error?.localizedDescription)")
+        })
+        return true;
     }
 
 
