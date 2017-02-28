@@ -30,7 +30,14 @@ class Tweet: NSObject {
         if let timeStampString = timeStampString {
             let formatter = DateFormatter()
             formatter.dateFormat = "EEE MMM d HH:mm:ss Z y"
-            timestamp = formatter.date(from: timeStampString as String) as NSDate?
+
+            let dateObj = formatter.date(from: timeStampString as String) as NSDate?
+            
+            let deformatter = DateFormatter()
+            deformatter.dateFormat = "MM-dd-yyyy"
+            let timeString = deformatter.string(from: dateObj as! Date)
+            
+            timestamp = deformatter.date(from: timeString as String) as NSDate?
         }
     }
     

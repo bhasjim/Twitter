@@ -54,7 +54,10 @@ class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         let tweet = tweets[indexPath.row]
         
         cell.username.text = tweet.account?.username as String?
-        cell.time.text = tweet.timestamp?.description
+        
+        let index = tweet.timestamp?.description.index((tweet.timestamp?.description.startIndex)!, offsetBy: 10)
+        cell.time.text = tweet.timestamp?.description.substring(to: index!)
+        
         cell.favCount.text = "\(tweet.favoritesCount)"
         cell.profPic.setImageWith(tweet.account?.profileUrl as! URL)
         cell.tweetText.text = tweet.text as String?

@@ -23,7 +23,7 @@ class User: NSObject {
         
         name = dictionary["name"] as? String as NSString? //attempt to cast to String, if not there it is nil
       
-        username = dictionary["username"] as? NSString
+        username = dictionary["screen_name"] as? NSString
         tagline = dictionary["description"] as? NSString
         
         let profileUrlString = dictionary["profile_image_url_https"] as? String
