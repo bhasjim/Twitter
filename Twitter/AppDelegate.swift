@@ -16,6 +16,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        if (User.currentUser != nil) {
+            
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let vc = storyboard.instantiateViewController(withIdentifier: "TweetsNavigationController")
+            self.window?.rootViewController = vc
+        }
+        
+        NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: User.userDidLogoutNotification), object: nil, queue: OperationQueue.main) { (NSNotification)-> Void in
+            
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let vc = storyboard.instantiateInitialViewController()
+            self.window?.rootViewController = vc
+        }
+        
+    
         // Override point for customization after application launch.
         return true
     }
@@ -46,39 +61,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             // when we return to the app from a link
             print(url.description)
         
+        let client = TwitterClient.sharedInstance        
+        client?.handleOpenUrl(url: url as NSURL);
 
-            let requestToken = BDBOAuth1Credential(queryString: url.query)
-            let twitterClient = BDBOAuth1SessionManager(baseURL: NSURL(string: "https://api.twitter.com") as URL!, consumerKey: "qD4k4zqpmv2QaHOzh4e2VDmcL", consumerSecret: "0EDrAWIadwJzBXWQt44rgGDv5XXAEt96iehnECJHMuHd6gGDRO")
         
-        //gets the Twitter Client so we can make API calls on behalf of this user
-        twitterClient?.fetchAccessToken(withPath: "oauth/access_token", method: "POST", requestToken: requestToken, success: { (accessToken: BDBOAuth1Credential?) -> Void in
-            print("I got access token")
-            // actually gets twitter account now
-            twitterClient?.get("1.1/account/verify_credentials.json", parameters: nil, progress: nil, success: { (task: URLSessionDataTask, response: Any?) -> Void in
-                //prints full account
-                //print("account: \(response)")
-                let user = response as! NSDictionary
-                print("name: \(user["name"])")
-                
-            }, failure: { (task: URLSessionDataTask?, error: Error) -> Void in
-                    
-            })
-            
-            twitterClient?.get("1.1/statuses/home_timeline.json", parameters: nil, progress: nil, success: { (task: URLSessionDataTask, response: Any?) -> Void in
-                let tweets = response as! [NSDictionary] //tweets is an array
-                
-                for tweet in tweets {
-                    print("\(tweet["text"]!)")
-                }
-            }, failure: { (task: URLSessionDataTask?, error: Error) in
-                
-            })
-            
-            
-        }, failure: { (error: Error?) -> Void in
-                print("error: \(error?.localizedDescription)")
-        })
-        return true;
+            return true;
     }
 
 

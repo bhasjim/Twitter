@@ -23,23 +23,16 @@ class LoginViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     @IBAction func onLoginButton(_ sender: Any) {
-        let twitterClient = BDBOAuth1SessionManager(baseURL: NSURL(string: "https://api.twitter.com") as URL!, consumerKey: "qD4k4zqpmv2QaHOzh4e2VDmcL", consumerSecret: "0EDrAWIadwJzBXWQt44rgGDv5XXAEt96iehnECJHMuHd6gGDRO")
         
-        twitterClient?.deauthorize()
-        
-        
-        
-        //token is permission to send user to the authorized URL
-        twitterClient?.fetchRequestToken(withPath: "/oauth/request_token", method: "GET", callbackURL: NSURL(string: "twitterdemo://oauth") as URL!, scope: nil, success: { (requestToken: BDBOAuth1Credential?) -> Void  in
-            print("I got a token!")
-            let url = NSURL(string: "https://api.twitter.com/oauth/authorize?oauth_token=\((requestToken?.token)!)")!
-            print(("https://api.twitter.com/oauth/authorize?oauth_token=\(requestToken?.token)"))
-            print("\(requestToken?.token)")
-            UIApplication.shared.open(url as URL)
-
-        }) { (error: Error?) -> Void in
-            print("Error: \(error?.localizedDescription)")
+        let client = TwitterClient.sharedInstance
+        client?.login(success: { () ->() in
+            self.performSegue(withIdentifier: "loginSegue", sender: nil)
+            print("I've logged in")
+        }) { (error: NSError) -> () in
+            print("Error: \(error.localizedDescription)")
         }
+        
+        
         
         
         
