@@ -48,7 +48,6 @@ class TweetCell: UITableViewCell {
         }
     }
     
-    
     @IBAction func clickRT(_ sender: Any) {
         if (rtClicked == false) {
             let rt = UIImage(named: "retweet-icon-green")
