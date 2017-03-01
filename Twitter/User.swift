@@ -21,15 +21,14 @@ class User: NSObject {
         //models take care of serialization (other way) and persistence
         self.dictionary = dictionary
         
+        
         name = dictionary["name"] as? String as NSString? //attempt to cast to String, if not there it is nil
-      
         username = dictionary["screen_name"] as? NSString
         tagline = dictionary["description"] as? NSString
         
+        //================ PROFILE IMAGE
         let profileUrlString = dictionary["profile_image_url_https"] as? String
-        
         let normalSized = profileUrlString?.replacingOccurrences(of: "_normal.", with: ".", options: .literal, range: nil)
-        
         if let normalSized = normalSized {
             profileUrl = NSURL(string: normalSized);
             

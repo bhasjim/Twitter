@@ -8,11 +8,13 @@
 
 import UIKit
 
-class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UIScrollViewDelegate {
 
     
     @IBOutlet weak var TableView: UITableView!
     var tweets: [Tweet]!
+    var isMoreDataLoading = false
+
 
     @IBAction func onLogoutButton(_ sender: Any) {
         TwitterClient.sharedInstance?.logout()
@@ -58,6 +60,7 @@ class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         let index = tweet.timestamp?.description.index((tweet.timestamp?.description.startIndex)!, offsetBy: 10)
         cell.time.text = tweet.timestamp?.description.substring(to: index!)
         
+        
         cell.favCount.text = "\(tweet.favoritesCount)"
         cell.profPic.setImageWith(tweet.account?.profileUrl as! URL)
         cell.tweetText.text = tweet.text as String?
@@ -73,14 +76,20 @@ class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
 
-    /*
+
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
+        let cell = sender as! UITableViewCell
+        let indexPath = TableView.indexPath(for: cell);
+        let tweet = self.tweets![indexPath!.row]
+        
+        let tweetDetails = segue.destination as! TweetDetailViewController
+        tweetDetails.tweet = tweet;
     }
-    */
+ 
 
 }
