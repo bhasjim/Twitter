@@ -47,6 +47,17 @@ class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     
+    // ====================== SEND TO PROFILE VC
+    /*
+      If you click on the prof pic then send it to the profile view controller!!
+     */
+    func TappedOnImage(recognizer:UITapGestureRecognizer){
+        guard let imageView = recognizer.view as? UIImageView
+            else {return}
+        print("HEYYY")
+        self.performSegue(withIdentifier: "toProfileVC", sender: recognizer)
+    }
+    
     // Row display. Implementers should *always* try to reuse cells by setting each cell's reuseIdentifier and querying for available reusable cells with dequeueReusableCellWithIdentifier:
     // Cell gets various attributes set automatically based on table (separators) and data source (accessory views, editing controls)
     
@@ -59,15 +70,24 @@ class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         
         let index = tweet.timestamp?.description.index((tweet.timestamp?.description.startIndex)!, offsetBy: 10)
         cell.time.text = tweet.timestamp?.description.substring(to: index!)
-        
-        
         cell.favCount.text = "\(tweet.favoritesCount)"
         cell.profPic.setImageWith(tweet.account?.profileUrl as! URL)
         cell.tweetText.text = tweet.text as String?
         cell.rtCount.text = "\(tweet.retweetCount)"
+        
+        
+        // =========== ADDING TAP TO PROF PIC ===========
+        cell.profPic?.isUserInteractionEnabled = true
+        cell.profPic?.tag = indexPath.row
+        let tapped = UITapGestureRecognizer(target: self, action: #selector(self.TappedOnImage(recognizer:))) //clicks on image and does function
+        tapped.numberOfTapsRequired = 1
+        tapped.numberOfTouchesRequired = 1
+        cell.profPic?.addGestureRecognizer(tapped)
+        
         return cell
         
     }
+    
 
 
     override func didReceiveMemoryWarning() {
@@ -83,12 +103,18 @@ class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
-        let cell = sender as! UITableViewCell
-        let indexPath = TableView.indexPath(for: cell);
-        let tweet = self.tweets![indexPath!.row]
+        if segue.identifier == "toProfileVC" { //if it is segue to profile then go to profileVC
+            let profileVC = segue.destination as! ProfileVC
+        }
+        else {
         
-        let tweetDetails = segue.destination as! TweetDetailViewController
-        tweetDetails.tweet = tweet;
+            let cell = sender as! UITableViewCell
+            let indexPath = TableView.indexPath(for: cell);
+            let tweet = self.tweets![indexPath!.row]
+        
+            let tweetDetails = segue.destination as! TweetDetailViewController
+            tweetDetails.tweet = tweet;
+        }
     }
  
 

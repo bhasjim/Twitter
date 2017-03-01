@@ -29,7 +29,7 @@ class TweetDetailViewController: UIViewController {
 
         
         //============ TEXT ============
-        self.username.text = tweet.account?.username as String?
+        self.username.text = "@" + (tweet.account?.username as String?)!
         self.tweetContent.text = tweet.text as String?
         self.name.text = tweet.account?.name as String?
         self.favCount.text = "\(tweet.favoritesCount)"

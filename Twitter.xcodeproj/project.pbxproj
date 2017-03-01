@@ -20,6 +20,7 @@
 		6ED7CD7D1E602F8800F86AEC /* TweetsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ED7CD7C1E602F8800F86AEC /* TweetsViewController.swift */; };
 		6ED7CD7F1E6560A700F86AEC /* TweetCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ED7CD7E1E6560A700F86AEC /* TweetCell.swift */; };
 		6ED7CD811E6642E200F86AEC /* TweetDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ED7CD801E6642E200F86AEC /* TweetDetailViewController.swift */; };
+		6EEC02F41E67782000D05FFC /* ProfileVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EEC02F31E67782000D05FFC /* ProfileVC.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -39,6 +40,7 @@
 		6ED7CD7C1E602F8800F86AEC /* TweetsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TweetsViewController.swift; sourceTree = "<group>"; };
 		6ED7CD7E1E6560A700F86AEC /* TweetCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TweetCell.swift; sourceTree = "<group>"; };
 		6ED7CD801E6642E200F86AEC /* TweetDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TweetDetailViewController.swift; sourceTree = "<group>"; };
+		6EEC02F31E67782000D05FFC /* ProfileVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileVC.swift; sourceTree = "<group>"; };
 		6EF843B46236976C56EBC098 /* Pods_Twitter.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Twitter.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -119,6 +121,7 @@
 			children = (
 				6ED7CD611E5E9C7800F86AEC /* ViewController.swift */,
 				6ED7CD7C1E602F8800F86AEC /* TweetsViewController.swift */,
+				6EEC02F31E67782000D05FFC /* ProfileVC.swift */,
 				6ED7CD711E5ED6D800F86AEC /* LoginViewController.swift */,
 				6ED7CD801E6642E200F86AEC /* TweetDetailViewController.swift */,
 			);
@@ -257,6 +260,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6EEC02F41E67782000D05FFC /* ProfileVC.swift in Sources */,
 				6ED7CD761E60178D00F86AEC /* User.swift in Sources */,
 				6ED7CD781E60179700F86AEC /* Tweet.swift in Sources */,
 				6ED7CD811E6642E200F86AEC /* TweetDetailViewController.swift in Sources */,
