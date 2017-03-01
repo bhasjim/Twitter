@@ -34,8 +34,7 @@ class TweetDetailViewController: UIViewController {
         self.name.text = tweet.account?.name as String?
         self.favCount.text = "\(tweet.favoritesCount)"
         self.rtCount.text = "\(tweet.retweetCount)"
-        tweetContent.sizeToFit()
-        tweetContent.numberOfLines = 0;
+
         
         //=========== TIMESTAMP ===========
         let index = tweet.timestamp?.description.index((tweet.timestamp?.description.startIndex)!, offsetBy: 10)
