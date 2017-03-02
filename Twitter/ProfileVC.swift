@@ -8,14 +8,85 @@
 
 import UIKit
 
-class ProfileVC: UIViewController {
+class ProfileVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
+    @IBOutlet weak var bannerPhoto: UIImageView!
+    @IBOutlet weak var profPic: UIImageView!
+    @IBOutlet weak var username: UILabel!
+    @IBOutlet weak var name: UILabel!
+    @IBOutlet weak var tableView: UITableView!
+
+    @IBOutlet weak var numFollowers: UILabel!
+    @IBOutlet weak var numFollowing: UILabel!
+    @IBOutlet weak var numTweets: UILabel!
+    
+    @IBOutlet weak var tweetTable: UITableView!
+    var tweets: [Tweet]!
+    var account: User?
+
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        username.text = account?.username as String?;
+        name.text = account?.name as String?;
+        
+        self.profPic.setImageWith(account?.profileUrl as! URL)
+        profPic.layer.cornerRadius = 6
+        profPic.clipsToBounds = true;
+
+        self.bannerPhoto.setImageWith(account?.bannerUrl as! URL)
+        blur(sender:bannerPhoto);
+        
+        self.numFollowers.text = "\((account?.followerCount)!)"
+        self.numFollowing.text = "\((account?.followingCount)!)"
+        self.numTweets.text = "\((account?.numTweets)!)"
+
+        
+        
+        //=============== GETTING TWEEEEETS
+        TwitterClient.sharedInstance?.homeTimeline(success: { (tweets: [Tweet]) -> () in
+            self.tweets = tweets
+            self.tweetTable.reloadData()
+            
+        }) { (error: NSError) -> () in
+            print(error.localizedDescription)
+        }
+        
+        self.tweetTable.reloadData()
+
+        
+        
 
         // Do any additional setup after loading the view.
     }
+    
+    func blur (sender: UIImageView){
+        
+        let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.regular)
+        let blurEffectView = UIVisualEffectView(effect: blurEffect)
+        blurEffectView.frame = sender.bounds
+        blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        sender.addSubview(blurEffectView)
+    }
 
+    @available(iOS 2.0, *)
+    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 0;
+    }
+    
+    
+    // Row display. Implementers should *always* try to reuse cells by setting each cell's reuseIdentifier and querying for available reusable cells with dequeueReusableCellWithIdentifier:
+    // Cell gets various attributes set automatically based on table (separators) and data source (accessory views, editing controls)
+    
+    @available(iOS 2.0, *)
+    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = UITableViewCell.init();
+        return cell;
+    }
+
+    
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.

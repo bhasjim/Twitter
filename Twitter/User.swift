@@ -15,24 +15,41 @@ class User: NSObject {
     var profileUrl: NSURL?
     var tagline: NSString?
     var dictionary: NSDictionary?
+    var bannerUrl: NSURL?
+    var followerCount: Int = 0
+    var followingCount: Int = 0
+    var numTweets: Int = 0
     
     init(dictionary: NSDictionary) {
         //deserialization code. Takes dictionary and populating individual properties
         //models take care of serialization (other way) and persistence
         self.dictionary = dictionary
         
-        
+        //================ TEXT STUFF
         name = dictionary["name"] as? String as NSString? //attempt to cast to String, if not there it is nil
         username = dictionary["screen_name"] as? NSString
         tagline = dictionary["description"] as? NSString
+        
+        //================ COUNT STUFF
+        followerCount = (dictionary["followers_count"] as? Int) ?? 0
+        followingCount = (dictionary["friends_count"] as? Int) ?? 0
+        numTweets = (dictionary["statuses_Count"] as? Int) ?? 0
+
         
         //================ PROFILE IMAGE
         let profileUrlString = dictionary["profile_image_url_https"] as? String
         let normalSized = profileUrlString?.replacingOccurrences(of: "_normal.", with: ".", options: .literal, range: nil)
         if let normalSized = normalSized {
             profileUrl = NSURL(string: normalSized);
-            
         }
+        
+        //================= BANNER IMAGE
+        let bannerUrlString = dictionary["profile_banner_url"] as? String
+        let bannerSize = bannerUrlString?.replacingOccurrences(of: "_normal.", with: ".", options: .literal, range: nil) //converts it to original size instead of 48x48
+        if let bannerSize = bannerSize{
+            bannerUrl = NSURL(string:bannerSize)
+        }
+        
     }
     static var userDidLogoutNotification = "UserDidLogout"
 

@@ -37,6 +37,17 @@ class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         self.TableView.reloadData()
     }
     
+    
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationController?.navigationBar.barTintColor = UIColor(red:0.25, green:0.60, blue:1.00, alpha:1.0)
+        //self.navigationController?.navigationBar.tintColor = UIColor.blue
+        self.navigationController!.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.white]
+    }
+    
+    
+    
     @available(iOS 2.0, *)
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if let tweets = tweets {
@@ -54,7 +65,7 @@ class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
     func TappedOnImage(recognizer:UITapGestureRecognizer){
         guard let imageView = recognizer.view as? UIImageView
             else {return}
-        print("HEYYY")
+        print(imageView.tag)
         self.performSegue(withIdentifier: "toProfileVC", sender: recognizer)
     }
     
@@ -78,7 +89,7 @@ class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         
         // =========== ADDING TAP TO PROF PIC ===========
         cell.profPic?.isUserInteractionEnabled = true
-        cell.profPic?.tag = indexPath.row
+        cell.profPic?.tag = indexPath.row //saves the index
         let tapped = UITapGestureRecognizer(target: self, action: #selector(self.TappedOnImage(recognizer:))) //clicks on image and does function
         tapped.numberOfTapsRequired = 1
         tapped.numberOfTouchesRequired = 1
@@ -104,7 +115,16 @@ class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
         if segue.identifier == "toProfileVC" { //if it is segue to profile then go to profileVC
+            
+            let newSender = sender as? UITapGestureRecognizer //cast it so we can get .view
+            let image = newSender?.view; //getting the image
+            
+            let index = (image?.tag)! as Int; //get the tag aka the index
+            let tweet = self.tweets![index]
+            
             let profileVC = segue.destination as! ProfileVC
+            profileVC.account = tweet.account;
+            
         }
         else {
         

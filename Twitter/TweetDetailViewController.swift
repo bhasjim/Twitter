@@ -34,6 +34,7 @@ class TweetDetailViewController: UIViewController {
         self.name.text = tweet.account?.name as String?
         self.favCount.text = "\(tweet.favoritesCount)"
         self.rtCount.text = "\(tweet.retweetCount)"
+        
 
         
         //=========== TIMESTAMP ===========
@@ -42,6 +43,8 @@ class TweetDetailViewController: UIViewController {
 
         //============= PROF PIC ==============
         self.profPic.setImageWith(tweet.account?.profileUrl as! URL)
+        profPic.layer.cornerRadius = 6
+        profPic.clipsToBounds = true;
 
 
         // Do any additional setup after loading the view.
