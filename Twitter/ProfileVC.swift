@@ -27,7 +27,7 @@ class ProfileVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+//        navigationController?.navigationItem.
         username.text = account?.username as String?;
         name.text = account?.name as String?;
         
