@@ -37,7 +37,7 @@ class TwitterClient: BDBOAuth1SessionManager {
     //========== GETTING USER TIMELINE
     func userTimeline(id:Int ,success: @escaping ([Tweet])->(), failure: @escaping (NSError) -> ()){
         
-        get("1.1/statuses/user_timeline", parameters: ["user_id":"\(id)","count": 30], progress: nil, success: { (task: URLSessionDataTask, response: Any?) -> Void in
+        get("1.1/statuses/user_timeline", parameters: ["user_id":id,"count": 30], progress: nil, success: { (task: URLSessionDataTask, response: Any?) -> Void in
             let dictionaries = response as! [NSDictionary] //tweets is an array
             let tweets = Tweet.tweetsWithArray(dictionaries: dictionaries)
             success(tweets)
@@ -48,6 +48,30 @@ class TwitterClient: BDBOAuth1SessionManager {
             
         })
     }
+    
+    //===========TWEEEEEET
+    func tweetWithText(_ text: String, inReplyToTweet: Tweet?, success: @escaping (Tweet)->(), failure: @escaping (Error?)->()) {
+        
+        var params: [String: String] = [String: String]()
+        params.updateValue(text, forKey: "status")
+        
+        if let tweet: Tweet = inReplyToTweet {
+            let replyTweetID: String = tweet.id! as String
+            params.updateValue(replyTweetID, forKey: "in_reply_to_status_id")
+        }
+        
+        self.post("1.1/statuses/update.json", parameters: params, progress: nil, success: { (task: URLSessionDataTask, response: Any?) in
+            
+            // Find something to do here!
+            let tweetResponse: NSDictionary = response as! NSDictionary
+            let tweet: Tweet = Tweet(dictionary: tweetResponse)
+            success(tweet)
+        }) { (task: URLSessionDataTask?, error: Error) in
+            failure(error)
+        }
+    }
+    
+
     
     func currentAccount(success: @escaping (User) -> (), failure: @escaping (NSError) -> ()) {
         get("1.1/account/verify_credentials.json", parameters: nil, progress: nil, success: { (task: URLSessionDataTask, response: Any?) -> Void in

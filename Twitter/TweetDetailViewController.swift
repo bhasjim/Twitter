@@ -55,6 +55,11 @@ class TweetDetailViewController: UIViewController {
     @IBAction func onFavClick(_ sender: Any) {
     }
     
+    @IBAction func replyClick(_ sender: Any) {
+        self.performSegue(withIdentifier: "toReply", sender: sender)
+        
+    }
+    
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

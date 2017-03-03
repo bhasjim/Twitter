@@ -350,7 +350,7 @@
                                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                                 <state key="normal" title="Cancel"/>
                                                 <connections>
-                                                    <segue destination="3K9-XX-v6m" kind="unwind" unwindAction="prepareForUnwind:" id="Kp9-Lu-lem"/>
+                                                    <action selector="onCancelClick:" destination="jqs-Ej-OBs" eventType="touchUpInside" id="xWg-VR-rKb"/>
                                                 </connections>
                                             </button>
                                         </barButtonItem>
@@ -409,14 +409,13 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wdm-QM-tdD" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <exit id="3K9-XX-v6m" userLabel="Exit" sceneMemberID="exit"/>
                 <tapGestureRecognizer id="3V6-Ka-kV4">
                     <connections>
                         <action selector="doneEditing:" destination="jqs-Ej-OBs" id="adX-1I-HrF"/>
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="3858.4000000000001" y="-529.38530734632684"/>
+            <point key="canvasLocation" x="3964" y="-555"/>
         </scene>
         <!--Tweet-->
         <scene sceneID="TcZ-1X-It6">
@@ -522,13 +521,17 @@
                                     <action selector="onFavClick:" destination="lph-2N-YtQ" eventType="touchUpInside" id="Mfx-ut-znz"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="l0U-z8-UA2">
+                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="l0U-z8-UA2" userLabel="Reply">
                                 <rect key="frame" x="65" y="244" width="30" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="Ou4-YZ-43t"/>
                                     <constraint firstAttribute="width" constant="30" id="j09-WS-iwn"/>
                                 </constraints>
                                 <state key="normal" title="Button" image="reply-icon"/>
+                                <connections>
+                                    <action selector="replyClick:" destination="lph-2N-YtQ" eventType="touchUpInside" id="N19-L1-wKk"/>
+                                    <segue destination="jqs-Ej-OBs" kind="presentation" identifier="toReply" id="5N4-kJ-W2G"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -611,4 +614,7 @@
         <image name="reply-icon" width="50" height="50"/>
         <image name="retweet-icon" width="50" height="50"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="5N4-kJ-W2G"/>
+    </inferredMetricsTieBreakers>
 </document>

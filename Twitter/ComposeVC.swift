@@ -16,6 +16,8 @@ class ComposeVC: UIViewController, UITextViewDelegate {
     @IBOutlet weak var profPic: UIImageView!
     @IBOutlet weak var navBar: UINavigationBar!
     
+    var inReply: Tweet?
+    
     
     //-=============== VIEW DID LOAD ===============-
     //-=============== VIEW DID LOAD ===============-
@@ -72,10 +74,25 @@ class ComposeVC: UIViewController, UITextViewDelegate {
     }
 
     @IBAction func onTweetClick(_ sender: Any) {
+        
+        TwitterClient.sharedInstance?.tweetWithText(self.tweetText.text, inReplyToTweet: self.inReply, success: { (tweet: Tweet) in
+            
+            //self.delegate?.ComposeTweetViewController(self, willExitWithSuccessfulTweet: tweet)
+            self.tweetText.resignFirstResponder()
+            self.dismiss(animated: true, completion: nil)
+        }) { (error: Error?) in
+            print(error?.localizedDescription)
+        }
         tweetText.resignFirstResponder()
+        self.dismiss(animated: true, completion: nil)
+
     }
     
     
+    @IBAction func onCancelClick(_ sender: Any) {
+        self.dismiss(animated: true, completion: nil)
+
+    }
     
     //=============== IF USER CLICKS OUTSIDE OF TEXTBOX, END EDITING
     //=============== IF USER CLICKS OUTSIDE OF TEXTBOX, END EDITING
