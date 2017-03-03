@@ -25,6 +25,12 @@ class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         TableView.delegate=self
         TableView.dataSource=self
         
+        getTweets()
+        
+        self.TableView.reloadData()
+    }
+    
+    func getTweets() {
         //Getting all the home tweets
         TwitterClient.sharedInstance?.homeTimeline(success: { (tweets: [Tweet]) -> () in
             self.tweets = tweets
@@ -35,6 +41,7 @@ class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         }
         
         self.TableView.reloadData()
+        
     }
     
     
@@ -99,6 +106,9 @@ class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         
     }
     
+    @IBAction func onTweetCompose(_ sender: Any) {
+        self.performSegue(withIdentifier: "tweetsToCompose", sender: sender)
+    }
 
 
     override func didReceiveMemoryWarning() {
@@ -114,28 +124,53 @@ class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
+        
+        //===============going to ProfileVC
+        //===============going to ProfileVC
         if segue.identifier == "toProfileVC" { //if it is segue to profile then go to profileVC
             
             let newSender = sender as? UITapGestureRecognizer //cast it so we can get .view
             let image = newSender?.view; //getting the image
             
             let index = (image?.tag)! as Int; //get the tag aka the index
-            let tweet = self.tweets![index]
+            let tweet = self.tweets![index] //get specific tweet from array of tweets
             
-            let profileVC = segue.destination as! ProfileVC
-            profileVC.account = tweet.account;
+            let profileVC = segue.destination as! ProfileVC //profileVC
+            profileVC.account = tweet.account; //set account to the account we want
+            profileVC.composeDelegate = self; //setting the delegate in case we tweet from there
             
         }
-        else {
         
-            let cell = sender as! UITableViewCell
-            let indexPath = TableView.indexPath(for: cell);
-            let tweet = self.tweets![indexPath!.row]
+        //===============going to detailsVC
+        //===============going to detailsVC
+        if segue.identifier == "showTweetDetails" {
+        
+            let cell = sender as! UITableViewCell //click on the cell so it is a sender
+            let indexPath = TableView.indexPath(for: cell); //indexpath of the cell
+            let tweet = self.tweets![indexPath!.row] //get the contents of the cell (tweet)
         
             let tweetDetails = segue.destination as! TweetDetailViewController
             tweetDetails.tweet = tweet;
+            tweetDetails.composeDelegate = self
+        }
+        
+        //=============== going to composeVC
+        //=============== going to composeVC
+        if segue.identifier == "tweetsToCompose" {
+            let destination = segue.destination as! ComposeVC
+            destination.composeDelegate = self;
         }
     }
  
 
 }
+
+
+extension TweetsViewController: ComposeVCDelegate{
+    func uploadTweet(tweet: Tweet) {
+        getTweets() //basically calling the home_timeline to update our home_Timeline
+        TableView.reloadData() //reload so it shows!
+    }
+    
+}
+

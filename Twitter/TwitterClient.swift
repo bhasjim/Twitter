@@ -56,15 +56,15 @@ class TwitterClient: BDBOAuth1SessionManager {
         params.updateValue(text, forKey: "status")
         
         if let tweet: Tweet = inReplyToTweet {
-            let replyTweetID: String = tweet.id! as String
+            let replyTweetID = tweet.id! as String
             params.updateValue(replyTweetID, forKey: "in_reply_to_status_id")
         }
         
         self.post("1.1/statuses/update.json", parameters: params, progress: nil, success: { (task: URLSessionDataTask, response: Any?) in
             
             // Find something to do here!
-            let tweetResponse: NSDictionary = response as! NSDictionary
-            let tweet: Tweet = Tweet(dictionary: tweetResponse)
+            let tweetResponse = response as! NSDictionary
+            let tweet = Tweet(dictionary: tweetResponse)
             success(tweet)
         }) { (task: URLSessionDataTask?, error: Error) in
             failure(error)

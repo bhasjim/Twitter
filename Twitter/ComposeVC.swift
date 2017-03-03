@@ -8,6 +8,10 @@
 
 import UIKit
 
+protocol ComposeVCDelegate: class {
+    func uploadTweet(tweet: Tweet)
+}
+
 class ComposeVC: UIViewController, UITextViewDelegate {
 
     @IBOutlet weak var tweetText: UITextView!
@@ -17,6 +21,7 @@ class ComposeVC: UIViewController, UITextViewDelegate {
     @IBOutlet weak var navBar: UINavigationBar!
     
     var inReply: Tweet?
+    var composeDelegate: ComposeVCDelegate?
     
     
     //-=============== VIEW DID LOAD ===============-
@@ -30,8 +35,15 @@ class ComposeVC: UIViewController, UITextViewDelegate {
         //tweetText!.layer.borderWidth = 1
         tweetText.layer.cornerRadius = 6;
         tweetText.clipsToBounds = true;
-        tweetText.text = "What's happening?"
-        tweetText.textColor = UIColor.lightGray
+        
+        if(inReply != nil) {
+            tweetText.text = "@" + "\(inReply?.account?.username as! String) ";
+            tweetText.textColor = UIColor.black
+        }
+        else{
+            tweetText.text = "What's happening?"
+            tweetText.textColor = UIColor.lightGray
+        }
         
         self.username.text = User.currentUser?.username as String?
         self.name.text = User.currentUser?.name as String?
@@ -75,16 +87,23 @@ class ComposeVC: UIViewController, UITextViewDelegate {
 
     @IBAction func onTweetClick(_ sender: Any) {
         
+        
         TwitterClient.sharedInstance?.tweetWithText(self.tweetText.text, inReplyToTweet: self.inReply, success: { (tweet: Tweet) in
             
             //self.delegate?.ComposeTweetViewController(self, willExitWithSuccessfulTweet: tweet)
             self.tweetText.resignFirstResponder()
+            
+            print("about to do composedelegate")
+            self.composeDelegate?.uploadTweet(tweet: tweet) //using our outside variable
+
             self.dismiss(animated: true, completion: nil)
+            
         }) { (error: Error?) in
-            print(error?.localizedDescription)
+            print(error?.localizedDescription as Any)
         }
         tweetText.resignFirstResponder()
-        self.dismiss(animated: true, completion: nil)
+        
+
 
     }
     

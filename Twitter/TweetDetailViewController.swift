@@ -20,6 +20,7 @@ class TweetDetailViewController: UIViewController {
     @IBOutlet weak var timestamp: UILabel!
     
     var tweet: Tweet!
+    var composeDelegate: ComposeVCDelegate?
     
     
     override func viewDidLoad() {
@@ -67,14 +68,17 @@ class TweetDetailViewController: UIViewController {
     }
     
 
-    /*
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
+        if(segue.identifier == "toReply") {
+            let composeDestination = segue.destination as! ComposeVC
+            composeDestination.inReply = tweet;
+            composeDestination.composeDelegate = self.composeDelegate
+        }
     }
-    */
 
 }

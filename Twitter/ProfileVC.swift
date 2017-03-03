@@ -23,6 +23,8 @@ class ProfileVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     @IBOutlet weak var tweetTable: UITableView!
     var tweets: [Tweet]!
     var account: User?
+    
+    var composeDelegate: ComposeVCDelegate?
 
     
     override func viewDidLoad() {
@@ -86,10 +88,6 @@ class ProfileVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     
     
-    //================== COME BACK FROM COMPOSE TWEET!!
-    @IBAction func prepare(forUnwind segue: UIStoryboardSegue) {
-        
-    }
     
 
     @available(iOS 2.0, *)
@@ -139,14 +137,20 @@ class ProfileVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     
 
-    /*
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
+        
+        //setting compose delegate
+        if(segue.identifier == "toComposeTweet"){
+            let composeVC = segue.destination as! ComposeVC
+            composeVC.composeDelegate = self.composeDelegate
+        }
+        
+        
     }
-    */
 
 }

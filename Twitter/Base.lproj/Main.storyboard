@@ -178,6 +178,19 @@
                                 <action selector="onLogoutButton:" destination="Hiz-T1-HBz" id="7mB-78-G0X"/>
                             </connections>
                         </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" style="plain" id="y9E-Cf-RhP">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="Cgq-W3-0iq">
+                                <rect key="frame" x="329" y="7" width="30" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="tintColor" red="0.98905237440000005" green="0.98842226889999996" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <state key="normal" image="edit-icon@3x copy"/>
+                                <connections>
+                                    <action selector="onComposeClick:" destination="y5e-rn-cKk" eventType="touchUpInside" id="kKw-sl-XcB"/>
+                                    <action selector="onTweetCompose:" destination="Hiz-T1-HBz" eventType="touchUpInside" id="5GH-lp-b6x"/>
+                                    <segue destination="jqs-Ej-OBs" kind="presentation" identifier="tweetsToCompose" id="OkD-CM-aii"/>
+                                </connections>
+                            </button>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="TableView" destination="U7p-Cb-tFp" id="KTj-nT-a5g"/>
@@ -231,7 +244,7 @@
                                         <rect key="frame" x="0.0" y="28" width="375" height="86"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="LfM-Km-UQj" id="Ipq-OF-YIs">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="85"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="85.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Tweet Texttt" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hUN-xW-pZ0">
@@ -615,6 +628,6 @@
         <image name="retweet-icon" width="50" height="50"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="5N4-kJ-W2G"/>
+        <segue reference="OkD-CM-aii"/>
     </inferredMetricsTieBreakers>
 </document>
