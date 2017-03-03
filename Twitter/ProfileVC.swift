@@ -46,24 +46,22 @@ class ProfileVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         self.numFollowing.text = "\((account?.followingCount)!)"
         self.numTweets.text = "\((account?.numTweets)!)"
 
-        
-        
-        //=============== GETTING TWEEEEETS
-        TwitterClient.sharedInstance?.homeTimeline(success: { (tweets: [Tweet]) -> () in
+
+        //Getting all the user's tweets
+        print((account?.id)!)
+        TwitterClient.sharedInstance?.userTimeline(id: (account?.id)!, success: { (tweets: [Tweet]) -> () in
             self.tweets = tweets
             self.tweetTable.reloadData()
             
         }) { (error: NSError) -> () in
+            print("HEY")
             print(error.localizedDescription)
         }
         
-        self.tweetTable.reloadData()
-
-        
-        
-
-        // Do any additional setup after loading the view.
     }
+    
+    
+    
     
     //==================== BLURRRR
     //==================== BLURRRR
@@ -88,6 +86,7 @@ class ProfileVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     
     
+    //================== COME BACK FROM COMPOSE TWEET!!
     @IBAction func prepare(forUnwind segue: UIStoryboardSegue) {
         
     }
@@ -95,17 +94,41 @@ class ProfileVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
     @available(iOS 2.0, *)
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 0;
+        if let tweets = tweets {
+            return tweets.count;
+        } else {
+            return 0
+        }
     }
     
     
     // Row display. Implementers should *always* try to reuse cells by setting each cell's reuseIdentifier and querying for available reusable cells with dequeueReusableCellWithIdentifier:
     // Cell gets various attributes set automatically based on table (separators) and data source (accessory views, editing controls)
-    
     @available(iOS 2.0, *)
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell.init();
-        return cell;
+        let cell = tweetTable.dequeueReusableCell(withIdentifier: "TweetCell") as! TweetCell
+        let tweet = tweets[indexPath.row]
+        
+        cell.username.text = tweet.account?.username as String?
+        
+        let index = tweet.timestamp?.description.index((tweet.timestamp?.description.startIndex)!, offsetBy: 10)
+        cell.time.text = tweet.timestamp?.description.substring(to: index!)
+        cell.favCount.text = "\(tweet.favoritesCount)"
+        cell.profPic.setImageWith(tweet.account?.profileUrl as! URL)
+        cell.tweetText.text = tweet.text as String?
+        cell.rtCount.text = "\(tweet.retweetCount)"
+        
+        
+//        // =========== ADDING TAP TO PROF PIC ===========
+//        cell.profPic?.isUserInteractionEnabled = true
+//        cell.profPic?.tag = indexPath.row //saves the index
+//        let tapped = UITapGestureRecognizer(target: self, action: #selector(self.TappedOnImage(recognizer:))) //clicks on image and does function
+//        tapped.numberOfTapsRequired = 1
+//        tapped.numberOfTouchesRequired = 1
+//        cell.profPic?.addGestureRecognizer(tapped)
+        
+        return cell
+        
     }
 
     

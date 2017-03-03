@@ -19,6 +19,7 @@ class User: NSObject {
     var followerCount: Int = 0
     var followingCount: Int = 0
     var numTweets: Int = 0
+    var id: Int = 0
     
     init(dictionary: NSDictionary) {
         //deserialization code. Takes dictionary and populating individual properties
@@ -34,6 +35,8 @@ class User: NSObject {
         followerCount = (dictionary["followers_count"] as? Int) ?? 0
         followingCount = (dictionary["friends_count"] as? Int) ?? 0
         numTweets = (dictionary["statuses_Count"] as? Int) ?? 0
+        id = (dictionary["id"] as? Int) ?? 0
+
 
         
         //================ PROFILE IMAGE

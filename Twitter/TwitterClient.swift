@@ -32,6 +32,23 @@ class TwitterClient: BDBOAuth1SessionManager {
         })
     }
     
+    //========== GETTING USER TIMELINE
+    //========== GETTING USER TIMELINE
+    //========== GETTING USER TIMELINE
+    func userTimeline(id:Int ,success: @escaping ([Tweet])->(), failure: @escaping (NSError) -> ()){
+        
+        get("1.1/statuses/user_timeline", parameters: ["user_id":"\(id)","count": 30], progress: nil, success: { (task: URLSessionDataTask, response: Any?) -> Void in
+            let dictionaries = response as! [NSDictionary] //tweets is an array
+            let tweets = Tweet.tweetsWithArray(dictionaries: dictionaries)
+            success(tweets)
+            
+            
+        }, failure: { (task: URLSessionDataTask?, error: Error) in
+            failure(error as NSError)
+            
+        })
+    }
+    
     func currentAccount(success: @escaping (User) -> (), failure: @escaping (NSError) -> ()) {
         get("1.1/account/verify_credentials.json", parameters: nil, progress: nil, success: { (task: URLSessionDataTask, response: Any?) -> Void in
             //prints full account
