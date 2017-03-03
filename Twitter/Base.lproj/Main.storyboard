@@ -342,6 +342,17 @@
                                                 </connections>
                                             </button>
                                         </barButtonItem>
+                                        <barButtonItem key="rightBarButtonItem" style="plain" id="GMi-Na-UW3">
+                                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="YDs-GJ-JV3">
+                                                <rect key="frame" x="276" y="7" width="83" height="30"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                                <state key="normal" title="Tweet"/>
+                                                <connections>
+                                                    <action selector="onTweetClick:" destination="jqs-Ej-OBs" eventType="touchUpInside" id="PF3-0g-FsN"/>
+                                                </connections>
+                                            </button>
+                                        </barButtonItem>
                                     </navigationItem>
                                 </items>
                             </navigationBar>
@@ -372,6 +383,10 @@
                             </textView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <gestureRecognizers/>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="3V6-Ka-kV4" appends="YES" id="hw2-zu-p2b"/>
+                        </connections>
                     </view>
                     <connections>
                         <outlet property="name" destination="V4U-7v-IKX" id="cfF-aR-kN3"/>
@@ -383,6 +398,11 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wdm-QM-tdD" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="3K9-XX-v6m" userLabel="Exit" sceneMemberID="exit"/>
+                <tapGestureRecognizer id="3V6-Ka-kV4">
+                    <connections>
+                        <action selector="doneEditing:" destination="jqs-Ej-OBs" id="adX-1I-HrF"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="3858.4000000000001" y="-529.38530734632684"/>
         </scene>

@@ -23,14 +23,13 @@ class ComposeVC: UIViewController, UITextViewDelegate {
         super.viewDidLoad()
         
         tweetText.delegate = self;
+
         
         //tweetText!.layer.borderWidth = 1
         tweetText.layer.cornerRadius = 6;
         tweetText.clipsToBounds = true;
         tweetText.text = "What's happening?"
         tweetText.textColor = UIColor.lightGray
-        tweetText.selectedTextRange = tweetText.textRange(from: tweetText.beginningOfDocument, to: tweetText.beginningOfDocument)
-
         
         self.username.text = User.currentUser?.username as String?
         self.name.text = User.currentUser?.name as String?
@@ -51,7 +50,7 @@ class ComposeVC: UIViewController, UITextViewDelegate {
         self.navBar.tintColor = UIColor.white
         self.navBar.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 70)
         
-        tweetText.becomeFirstResponder()
+        //tweetText.becomeFirstResponder()
 
     }
     
@@ -67,58 +66,24 @@ class ComposeVC: UIViewController, UITextViewDelegate {
             textView.text = "What's happening?"
             textView.textColor = UIColor.lightGray
         }
+        else{
+            textView.resignFirstResponder()
+        }
+    }
+
+    @IBAction func onTweetClick(_ sender: Any) {
+        tweetText.resignFirstResponder()
     }
     
     
     
-    
-    
-    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-        
-        // Combine the textView text and the replacement text to
-        // create the updated text string
-        let currentText = textView.text
-        let nsText = currentText as NSString?
-        let updatedText = nsText?.replacingCharacters(in: range, with: text)
-        
-        // If updated text view will be empty, add the placeholder
-        // and set the cursor to the beginning of the text view
-        if (updatedText?.isEmpty)! {
-            
-            textView.text = "What's happening?"
-            textView.textColor = UIColor.lightGray
-            
-            textView.selectedTextRange = textView.textRange(from: textView.beginningOfDocument, to: textView.beginningOfDocument)
-            
-            return false
-        }
-            
-            // Else if the text view's placeholder is showing and the
-            // length of the replacement string is greater than 0, clear
-            // the text view and set its color to black to prepare for
-            // the user's entry
-        else if textView.textColor == UIColor.lightGray && !text.isEmpty {
-            textView.text = nil
-            textView.textColor = UIColor.black
-        }
-        
-        return true
+    //=============== IF USER CLICKS OUTSIDE OF TEXTBOX, END EDITING
+    //=============== IF USER CLICKS OUTSIDE OF TEXTBOX, END EDITING
+    //=============== IF USER CLICKS OUTSIDE OF TEXTBOX, END EDITING
+    //=============== IF USER CLICKS OUTSIDE OF TEXTBOX, END EDITING
+    @IBAction func doneEditing(_ sender: Any) {
+        tweetText.resignFirstResponder()
     }
-    
-    
-    
-    
-    
-    func textViewDidChangeSelection(_ textView: UITextView) {
-        if self.view.window != nil {
-            if textView.textColor == UIColor.lightGray {
-                textView.selectedTextRange = textView.textRange(from: textView.beginningOfDocument, to: textView.beginningOfDocument)
-            }
-        }
-    }
-    
-    
-    
     
     
 
