@@ -69,6 +69,15 @@ class ProfileVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         sender.addSubview(blurEffectView)
     }
+    @IBAction func onComposeClick(_ sender: Any) {
+        self.performSegue(withIdentifier: "toComposeTweet", sender: sender)
+    }
+    
+    
+    @IBAction func prepare(forUnwind segue: UIStoryboardSegue) {
+        
+    }
+    
 
     @available(iOS 2.0, *)
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
