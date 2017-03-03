@@ -326,33 +326,65 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <navigationBar contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5cD-pw-Son">
+                            <navigationBar contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2y4-Ve-DVZ">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                 <items>
-                                    <navigationItem title="Compose Tweet" id="Dd1-59-RwN">
-                                        <barButtonItem key="leftBarButtonItem" style="plain" id="lg6-tF-9ma">
-                                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="Vpl-Hl-asO">
+                                    <navigationItem title="Compose Tweet" id="CKs-tw-ev5">
+                                        <barButtonItem key="leftBarButtonItem" style="plain" id="GmW-fE-xfB">
+                                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="Pt2-yb-oEW">
                                                 <rect key="frame" x="16" y="7" width="83" height="30"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                                 <state key="normal" title="Cancel"/>
                                                 <connections>
-                                                    <action selector="onCancel:" destination="jqs-Ej-OBs" eventType="touchUpInside" id="RRD-N2-J98"/>
-                                                    <segue destination="3K9-XX-v6m" kind="unwind" unwindAction="prepareForUnwind:" id="Z5T-Rj-n4U"/>
+                                                    <segue destination="3K9-XX-v6m" kind="unwind" unwindAction="prepareForUnwind:" id="Kp9-Lu-lem"/>
                                                 </connections>
                                             </button>
                                         </barButtonItem>
                                     </navigationItem>
                                 </items>
                             </navigationBar>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Name ______" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="V4U-7v-IKX">
+                                <rect key="frame" x="95" y="94" width="257" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="username_____" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sac-tF-kB5">
+                                <rect key="frame" x="95" y="114" width="257" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="WNx-QL-Te2">
+                                <rect key="frame" x="15" y="86" width="60" height="60"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="vws-E5-fS7">
+                                <rect key="frame" x="16" y="183" width="336" height="188"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
+                    <connections>
+                        <outlet property="name" destination="V4U-7v-IKX" id="cfF-aR-kN3"/>
+                        <outlet property="navBar" destination="2y4-Ve-DVZ" id="czf-70-V6x"/>
+                        <outlet property="profPic" destination="WNx-QL-Te2" id="fpw-ZU-SVr"/>
+                        <outlet property="tweetText" destination="vws-E5-fS7" id="Ubc-uH-BGI"/>
+                        <outlet property="username" destination="sac-tF-kB5" id="1Yp-Op-v8e"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wdm-QM-tdD" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="3K9-XX-v6m" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="3860" y="-528"/>
+            <point key="canvasLocation" x="3858.4000000000001" y="-529.38530734632684"/>
         </scene>
         <!--Tweet-->
         <scene sceneID="TcZ-1X-It6">

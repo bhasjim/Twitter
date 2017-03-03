@@ -38,6 +38,10 @@ class ProfileVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         self.bannerPhoto.setImageWith(account?.bannerUrl as! URL)
         blur(sender:bannerPhoto);
         
+        //set constraints so that the image is actually those boundaries, else it's just outside the frame
+        self.bannerPhoto.clipsToBounds = true;
+        
+        
         self.numFollowers.text = "\((account?.followerCount)!)"
         self.numFollowing.text = "\((account?.followingCount)!)"
         self.numTweets.text = "\((account?.numTweets)!)"
@@ -61,14 +65,24 @@ class ProfileVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         // Do any additional setup after loading the view.
     }
     
+    //==================== BLURRRR
+    //==================== BLURRRR
     func blur (sender: UIImageView){
         
         let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.regular)
         let blurEffectView = UIVisualEffectView(effect: blurEffect)
+        blurEffectView.alpha = 0.3
         blurEffectView.frame = sender.bounds
-        blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         sender.addSubview(blurEffectView)
+        
+        blurEffectView.alpha = 0 //makes blur completely clear
+        UIView.animate(withDuration: 0.8) { //slowly builds blur back up
+            blurEffectView.alpha = 0.8
+        }
+        
     }
+    
+    
     @IBAction func onComposeClick(_ sender: Any) {
         self.performSegue(withIdentifier: "toComposeTweet", sender: sender)
     }
