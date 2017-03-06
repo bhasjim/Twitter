@@ -31,23 +31,37 @@ class TwitterClient: BDBOAuth1SessionManager {
             
         })
     }
+//    
+//    //========== GETTING USER TIMELINE
+//    //========== GETTING USER TIMELINE
+//    //========== GETTING USER TIMELINE
+//    func getUserTweets(_ user: User, success: @escaping ([Tweet])->(), failure: @escaping (Error?)->()) {
+//        print("hello from getUserTweets")
+//        
+//        var userID = user.id;
+//        
+//        print("hello from getUserTweets")
+//
+//        var params = [String: String]()
+//        params.updateValue(userID as! String, forKey: "user_id")
+//        print("hello from getUserTweets")
+//
+//        
+//        self.get("1.1/statuses/user_timeline.json", parameters: params, progress: nil, success: { (task: URLSessionDataTask, response: Any?) in
+//            // Code
+//            let tweetsResponse = (response as? [NSDictionary])!
+//            print("hello frmo user_timeline")
+//
+//            let tweets = Tweet.tweetsWithArray(dictionaries: tweetsResponse)
+//            success(tweets)
+//        }, failure: { (task: URLSessionDataTask?, error: Error) in
+//            // Error
+//            failure(error)
+//        })
+//        
+//    }
     
-    //========== GETTING USER TIMELINE
-    //========== GETTING USER TIMELINE
-    //========== GETTING USER TIMELINE
-    func userTimeline(id:Int ,success: @escaping ([Tweet])->(), failure: @escaping (NSError) -> ()){
-        
-        get("1.1/statuses/user_timeline", parameters: ["user_id":id,"count": 30], progress: nil, success: { (task: URLSessionDataTask, response: Any?) -> Void in
-            let dictionaries = response as! [NSDictionary] //tweets is an array
-            let tweets = Tweet.tweetsWithArray(dictionaries: dictionaries)
-            success(tweets)
-            
-            
-        }, failure: { (task: URLSessionDataTask?, error: Error) in
-            failure(error as NSError)
-            
-        })
-    }
+    
     
     //===========TWEEEEEET
     func tweetWithText(_ text: String, inReplyToTweet: Tweet?, success: @escaping (Tweet)->(), failure: @escaping (Error?)->()) {
@@ -55,7 +69,7 @@ class TwitterClient: BDBOAuth1SessionManager {
         var params: [String: String] = [String: String]()
         params.updateValue(text, forKey: "status")
         
-        if let tweet: Tweet = inReplyToTweet {
+        if let tweet = inReplyToTweet {
             let replyTweetID = tweet.id! as String
             params.updateValue(replyTweetID, forKey: "in_reply_to_status_id")
         }
@@ -71,7 +85,34 @@ class TwitterClient: BDBOAuth1SessionManager {
         }
     }
     
+    
+    func retweet(tweet: Tweet, success: @escaping () -> (), failure: @escaping (Error?)->()) {
+        guard let tweetID = tweet.id
+            else {
+                print ("Tweet ID did not register")
+                return
+        }
+        
+        
+        if(tweet.retweeted)!{
+            self.post("1.1/statuses/unretweet/\(tweetID).json", parameters: nil, progress: nil, success: { (task: URLSessionDataTask, response: Any?) in
+                success()
+            }, failure: { (task: URLSessionDataTask?, error: Error) in
+                failure(error)
+            })
+        }
+        else {
+            self.post("1.1/statuses/retweet/\(tweetID).json", parameters: nil, progress: nil, success: { (task: URLSessionDataTask, response: Any?) in
+                success()
+            }, failure: { (task: URLSessionDataTask?, error: Error) in
+                failure(error)
+            })
+            
+        }
+        
+        
 
+    }
     
     func currentAccount(success: @escaping (User) -> (), failure: @escaping (NSError) -> ()) {
         get("1.1/account/verify_credentials.json", parameters: nil, progress: nil, success: { (task: URLSessionDataTask, response: Any?) -> Void in
@@ -88,6 +129,10 @@ class TwitterClient: BDBOAuth1SessionManager {
         })
         
     }
+    
+    
+    
+    
     
     func login(success: @escaping ()->(), failure: @escaping (NSError)->()){
         self.loginSuccess = success

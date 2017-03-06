@@ -30,6 +30,8 @@ class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         self.TableView.reloadData()
     }
     
+    
+    
     func getTweets() {
         //Getting all the home tweets
         TwitterClient.sharedInstance?.homeTimeline(success: { (tweets: [Tweet]) -> () in
@@ -85,6 +87,8 @@ class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         let tweet = tweets[indexPath.row]
         
         cell.username.text = tweet.account?.username as String?
+        cell.tweet = tweet;
+        
         
         let index = tweet.timestamp?.description.index((tweet.timestamp?.description.startIndex)!, offsetBy: 10)
         cell.time.text = tweet.timestamp?.description.substring(to: index!)
@@ -92,6 +96,17 @@ class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         cell.profPic.setImageWith(tweet.account?.profileUrl as! URL)
         cell.tweetText.text = tweet.text as String?
         cell.rtCount.text = "\(tweet.retweetCount)"
+        
+        if(tweet.favorited)!{
+            cell.favButton.setImage(UIImage(named: "favor-icon-red" ), for:UIControlState.normal)
+        } else {
+            cell.favButton.setImage(UIImage(named: "favor-icon" ), for:UIControlState.normal)
+        }
+        if(tweet.retweeted)!{
+            cell.rtButton.setImage(UIImage(named: "retweet-icon-green"), for:UIControlState.normal)
+        } else {
+            cell.rtButton.setImage(UIImage(named: "retweet-icon"), for:UIControlState.normal)
+        }
         
         
         // =========== ADDING TAP TO PROF PIC ===========
@@ -151,6 +166,7 @@ class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         
             let tweetDetails = segue.destination as! TweetDetailViewController
             tweetDetails.tweet = tweet;
+            tweetDetails.buttonDelegate = self;
             tweetDetails.composeDelegate = self
         }
         
@@ -171,6 +187,15 @@ extension TweetsViewController: ComposeVCDelegate{
         getTweets() //basically calling the home_timeline to update our home_Timeline
         TableView.reloadData() //reload so it shows!
     }
+}
+
+extension TweetsViewController: buttonDelegate {
+    func updateRT() {
+        TableView.reloadData()
+    }
     
+    func updateFav() {
+        TableView.reloadData()
+    }
 }
 

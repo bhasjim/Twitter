@@ -21,6 +21,7 @@ class ProfileVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     @IBOutlet weak var numTweets: UILabel!
     
     @IBOutlet weak var tweetTable: UITableView!
+    
     var tweets: [Tweet]!
     var account: User?
     
@@ -30,7 +31,7 @@ class ProfileVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     override func viewDidLoad() {
         super.viewDidLoad()
 //        navigationController?.navigationItem.
-        username.text = account?.username as String?;
+        username.text = "@" + (account?.username as String?)!;
         name.text = account?.name as String?;
         
         self.profPic.setImageWith(account?.profileUrl as! URL)
@@ -53,16 +54,19 @@ class ProfileVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         self.numTweets.text = "\((account?.numTweets)!)"
 
 
-        //Getting all the user's tweets
-        print((account?.id)!)
-        TwitterClient.sharedInstance?.userTimeline(id: (account?.id)!, success: { (tweets: [Tweet]) -> () in
-            self.tweets = tweets
-            self.tweetTable.reloadData()
-            
-        }) { (error: NSError) -> () in
-            print("HEY")
-            print(error.localizedDescription)
-        }
+//        //Getting all the user's tweets
+//        TwitterClient.sharedInstance?.getUserTweets(account!, success: { (tweets: [Tweet]) in
+//                self.tweets = tweets
+//                print(self.tweets.count)
+//                self.tweetTable.reloadData()
+//
+//            
+//        }, failure: { (error:Error?) in
+//            print(error?.localizedDescription)
+//        })
+        
+        self.tweetTable.reloadData()
+        
         
     }
     

@@ -8,6 +8,11 @@
 
 import UIKit
 
+protocol buttonDelegate: class {
+    func updateFav()
+    func updateRT()
+}
+
 class TweetDetailViewController: UIViewController {
     @IBOutlet weak var profPic: UIImageView!
     @IBOutlet weak var favButton: UIButton!
@@ -21,6 +26,8 @@ class TweetDetailViewController: UIViewController {
     
     var tweet: Tweet!
     var composeDelegate: ComposeVCDelegate?
+    var twitterClient = TwitterClient.sharedInstance
+    var buttonDelegate: buttonDelegate?
     
     
     override func viewDidLoad() {
@@ -35,6 +42,20 @@ class TweetDetailViewController: UIViewController {
         self.name.text = tweet.account?.name as String?
         self.favCount.text = "\(tweet.favoritesCount)"
         self.rtCount.text = "\(tweet.retweetCount)"
+        
+        
+        //============ FAV BUTTON AND RT
+        if(tweet.favorited)!{
+            self.favButton.setImage(UIImage(named: "favor-icon-red" ), for:UIControlState.normal)
+        } else {
+            self.favButton.setImage(UIImage(named: "favor-icon" ), for:UIControlState.normal)
+        }
+        
+        if(tweet.retweeted)!{
+            self.rtButton.setImage(UIImage(named: "retweet-icon-green"), for:UIControlState.normal)
+        } else {
+            self.rtButton.setImage(UIImage(named: "retweet-icon"), for:UIControlState.normal)
+        }
         
 
         
@@ -51,9 +72,49 @@ class TweetDetailViewController: UIViewController {
         // Do any additional setup after loading the view.
     }
     @IBAction func onRetweetClick(_ sender: Any) {
+    
+        twitterClient?.retweet(tweet: self.tweet!, success: {
+        }, failure: { (error: Error?) in
+            print(error?.localizedDescription as Any)
+        })
+        
+        
+        if (tweet?.retweeted == false) {
+            let rt = UIImage(named: "retweet-icon-green")
+            rtButton.setImage(rt, for: UIControlState.normal)
+            tweet?.retweetCount+=1;
+            
+            rtCount.text = "\(Int(rtCount.text!)! + 1)"
+            tweet?.retweeted = true;
+        }
+        else{
+            let rt = UIImage(named: "retweet-icon")
+            rtButton.setImage(rt, for: UIControlState.normal)
+            tweet?.retweetCount-=1;
+            rtCount.text = "\(Int(rtCount.text!)! - 1)"
+            tweet?.retweeted = false;
+        }
+        self.buttonDelegate?.updateRT()
     }
     
     @IBAction func onFavClick(_ sender: Any) {
+        
+        if (tweet?.favorited == false){
+            let pressed = UIImage(named: "favor-icon-red")
+            favButton.setImage(pressed, for: UIControlState.normal)
+            tweet?.favoritesCount+=1;
+            favCount.text = "\(Int(favCount.text!)! + 1)"
+            tweet?.favorited = true;
+        }
+        else {
+            let pressed = UIImage(named: "favor-icon")
+            favButton.setImage(pressed, for: UIControlState.normal)
+            tweet?.favoritesCount-=1;
+            
+            favCount.text = "\(Int(favCount.text!)! - 1)"
+            tweet?.favorited = false;
+        }
+        self.buttonDelegate?.updateFav()
     }
     
     @IBAction func replyClick(_ sender: Any) {

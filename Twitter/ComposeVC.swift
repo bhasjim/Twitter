@@ -92,8 +92,6 @@ class ComposeVC: UIViewController, UITextViewDelegate {
             
             //self.delegate?.ComposeTweetViewController(self, willExitWithSuccessfulTweet: tweet)
             self.tweetText.resignFirstResponder()
-            
-            print("about to do composedelegate")
             self.composeDelegate?.uploadTweet(tweet: tweet) //using our outside variable
 
             self.dismiss(animated: true, completion: nil)

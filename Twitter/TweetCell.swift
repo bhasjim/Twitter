@@ -20,8 +20,10 @@ class TweetCell: UITableViewCell {
     @IBOutlet weak var favButton: UIButton!
     @IBOutlet weak var rtButton: UIButton!
     
-    var rtClicked = false;
-    var favClicked = false;
+    var tweet: Tweet?
+    
+    var twitterClient = TwitterClient.sharedInstance
+
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -33,35 +35,58 @@ class TweetCell: UITableViewCell {
     }
 
     @IBAction func clickFav(_ sender: Any) {
-        if (favClicked == false){
+        if (tweet?.favorited == false){
             let pressed = UIImage(named: "favor-icon-red")
             favButton.setImage(pressed, for: UIControlState.normal)
+            tweet?.favoritesCount+=1;
             favCount.text = "\(Int(favCount.text!)! + 1)"
-            favClicked = true;
+            tweet?.favorited = true;
         }
         else {
             let pressed = UIImage(named: "favor-icon")
             favButton.setImage(pressed, for: UIControlState.normal)
+            tweet?.favoritesCount-=1;
+
             favCount.text = "\(Int(favCount.text!)! - 1)"
-            favClicked = false;
+            tweet?.favorited = false;
             
         }
     }
     
     @IBAction func clickRT(_ sender: Any) {
-        if (rtClicked == false) {
+        
+        twitterClient?.retweet(tweet: self.tweet!, success: {
+        }, failure: { (error: Error?) in
+            print(error?.localizedDescription as Any)
+        })
+        
+        
+        if (tweet?.retweeted == false) {
             let rt = UIImage(named: "retweet-icon-green")
             rtButton.setImage(rt, for: UIControlState.normal)
+            tweet?.retweetCount+=1;
+
             rtCount.text = "\(Int(rtCount.text!)! + 1)"
-            rtClicked = true;
+            tweet?.retweeted = true;
         }
         else{
             let rt = UIImage(named: "retweet-icon")
             rtButton.setImage(rt, for: UIControlState.normal)
+            tweet?.retweetCount-=1;
             rtCount.text = "\(Int(rtCount.text!)! - 1)"
-            rtClicked = false;
+            tweet?.retweeted = false;
         }
     }
+    
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        self.favButton.setImage(UIImage(named: "favor-icon"), for:UIControlState.normal)
+        self.rtButton.setImage(UIImage(named: "retweet-icon"), for:UIControlState.normal)
+        self.favCount.text = "\(tweet?.favoritesCount)"
+        self.rtCount.text = "\(tweet?.retweetCount)"
+    }
+    
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 
