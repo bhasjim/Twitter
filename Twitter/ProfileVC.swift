@@ -37,8 +37,12 @@ class ProfileVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         profPic.layer.cornerRadius = 6
         profPic.clipsToBounds = true;
 
-        self.bannerPhoto.setImageWith(account?.bannerUrl as! URL)
-        blur(sender:bannerPhoto);
+        if(account?.bannerUrl != nil){
+            self.bannerPhoto.setImageWith(account?.bannerUrl as! URL)
+            blur(sender:bannerPhoto);
+        } else {
+            
+        }
         
         //set constraints so that the image is actually those boundaries, else it's just outside the frame
         self.bannerPhoto.clipsToBounds = true;
